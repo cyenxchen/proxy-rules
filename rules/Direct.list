@@ -3,5 +3,17 @@
 # FORMAT: Surge RULE-SET (policy is supplied by the caller)
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
-# General direct rules that do not use the selectable Steam direct policy.
+# Steam download endpoints come from the original Surge profile and override
+# the broader upstream Steam rules that follow this custom list.
+DOMAIN-SUFFIX,steamserver.net
+DOMAIN-SUFFIX,dl.steam.clngaa.com
+DOMAIN-SUFFIX,dl.steam.ksyna.com
+DOMAIN-SUFFIX,st.dl.eccdnx.com
+DOMAIN-SUFFIX,st.dl.bscstorage.net
+DOMAIN-SUFFIX,st.dl.pinyuncloud.com
+DOMAIN-SUFFIX,steampipe.steamcontent.tnkjmec.com
+DOMAIN-SUFFIX,steampowered.com.8686c.com
+DOMAIN-SUFFIX,steamstatic.com.8686c.com
+DOMAIN-SUFFIX,cdn-qc.content.steamchina.com
+DOMAIN-SUFFIX,cdn-ali.content.steamchina.com
 DOMAIN-SUFFIX,taobao.taobao

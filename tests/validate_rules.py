@@ -29,13 +29,12 @@ ALLOWED_OPTIONS = {"extended-matching", "no-resolve"}
 # migration-size floors so an accidental truncation cannot be published.
 PUBLISHED_RULE_SETS = {
     "Apple.list": ("🍎 Apple", 5),
-    "Direct.list": ("DIRECT", 1),
+    "Direct.list": ("DIRECT", 12),
     "IndependentIP.list": ("🏠 Independent-IP", 18),
     "JP.list": ("🇯🇵 JP", 3),
     "PlayStation.list": ("🎮 PlayStation", 6),
     "Proxy.list": ("👻 Proxy", 377),
     "SGP.list": ("🇸🇬 SGP", 15),
-    "SteamDirect.list": ("DIRECT", 11),
     "UK.list": ("🇬🇧 UK", 2),
     "US.list": ("🇺🇸 US", 8),
 }
@@ -53,7 +52,6 @@ MIHOMO_RULE_PROVIDERS = {
     "PlayStation.list": ("customPlayStation", "🎮 PlayStation"),
     "Proxy.list": ("customProxy", "👻 Proxy"),
     "SGP.list": ("customSGP", "🇸🇬 SGP"),
-    "SteamDirect.list": ("customSteamDirect", "🎯 Direct"),
     "UK.list": ("customUK", "🇬🇧 UK"),
     "US.list": ("customUS", "🇺🇸 US"),
 }
@@ -328,6 +326,11 @@ def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
         group = groups.get(group_name)
         if not isinstance(group, dict) or "🇬🇧 UK" not in (group.get("proxies") or []):
             errors.append(f"{path}: group {group_name!r} must reference '🇬🇧 UK'")
+    if "🎯 Direct" in groups:
+        errors.append(f"{path}: redundant '🎯 Direct' wrapper group remains")
+    for group_name, group in groups.items():
+        if "🎯 Direct" in (group.get("proxies") or []):
+            errors.append(f"{path}: group {group_name!r} still references '🎯 Direct'")
     other_filter = str((groups.get("🌍 Other") or {}).get("filter", ""))
     if "🇬🇧" not in other_filter:
         errors.append(f"{path}: '🌍 Other' must exclude UK nodes")
@@ -346,6 +349,17 @@ def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
             errors.append(f"{path}: rules[{index}] has invalid CSV syntax: {exc}")
             continue
         parsed_rules.append((index, fields))
+
+    direct_wrapper_rules = [
+        index
+        for index, fields in parsed_rules
+        if len(fields) >= 3 and fields[2] == "🎯 Direct"
+    ]
+    if direct_wrapper_rules:
+        errors.append(
+            f"{path}: {len(direct_wrapper_rules)} rules still use '🎯 Direct'; "
+            f"first is rules[{direct_wrapper_rules[0]}]"
+        )
 
     custom_provider_names = {
         provider_name for provider_name, _ in MIHOMO_RULE_PROVIDERS.values()

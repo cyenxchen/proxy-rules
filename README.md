@@ -17,7 +17,6 @@ rules remain in local profiles.
 | `PlayStation.list` | `🎮 PlayStation` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/PlayStation.list` |
 | `Proxy.list` | `👻 Proxy` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list` |
 | `SGP.list` | `🇸🇬 SGP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SGP.list` |
-| `SteamDirect.list` | `DIRECT` / `🎯 Direct` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SteamDirect.list` |
 | `UK.list` | `🇬🇧 UK` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/UK.list` |
 | `US.list` | `🇺🇸 US` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/US.list` |
 
@@ -50,8 +49,8 @@ before broader upstream rule sets. Surge evaluates rules from top to bottom and
 uses the first matching policy.
 
 Policy names are supplied by each client and may differ. For example,
-`Apple.list` uses `🍎 Apple` in Surge and `🍎 AppleStore` in Mihomo, while
-`SteamDirect.list` uses `DIRECT` in Surge and `🎯 Direct` in Mihomo.
+`Apple.list` uses `🍎 Apple` in Surge and `🍎 AppleStore` in Mihomo. Direct
+rules use the built-in `DIRECT` policy on both clients.
 
 `extended-matching` is deliberately omitted from the example because the
 initial rules were migrated from ordinary inline rules. Adding it would broaden
