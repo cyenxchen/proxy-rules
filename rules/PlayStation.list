@@ -1,0 +1,12 @@
+# NAME: Custom PlayStation
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Migrated from the personal Surge profile on 2026-09-03
+#
+# These rules supplement the upstream PlayStation list.
+DOMAIN-SUFFIX,playstation.com.cn
+DOMAIN-SUFFIX,account.sony.com
+DOMAIN-SUFFIX,sonyinteractive.com
+DOMAIN-SUFFIX,sonyinteractive.net
+DOMAIN-SUFFIX,scea.com
+DOMAIN-SUFFIX,scei.co.jp

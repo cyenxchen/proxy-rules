@@ -1,0 +1,24 @@
+# NAME: Custom Independent IP
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Migrated from the personal Surge profile on 2026-09-03
+#
+# Keep one rule per line. Do not add a policy name or FINAL here.
+DOMAIN,paymentrelayservice-wpc-device.apple.com
+DOMAIN,paymentrelayservice.apple.com
+DOMAIN,pay.apple.com
+DOMAIN-SUFFIX,cleanip.io
+DOMAIN-SUFFIX,iprisk.top
+PROCESS-NAME,"Claude Helper"
+PROCESS-NAME,claude
+PROCESS-NAME,codex
+DOMAIN-SUFFIX,ipdata.co
+DOMAIN-SUFFIX,chatgpt.com
+DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
+DOMAIN-SUFFIX,datadoghq.com
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN-SUFFIX,ippure.com
+DOMAIN-SUFFIX,ip2location.com
+DOMAIN-SUFFIX,ping0.cc
+DOMAIN-SUFFIX,claude.site
+DOMAIN-SUFFIX,claude.com

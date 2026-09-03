@@ -1,0 +1,17 @@
+# NAME: Custom Singapore
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Migrated from the personal Surge profile on 2026-09-03
+DOMAIN-SUFFIX,kaylees.site
+DOMAIN-SUFFIX,web3.okx.com.cdn.cloudflare.net
+DOMAIN-SUFFIX,okx.com.cdn.cloudflare.net
+DOMAIN-SUFFIX,okx.com
+DOMAIN-SUFFIX,bitkeep.life
+DOMAIN-SUFFIX,bitkeep.top
+DOMAIN-SUFFIX,bitkeep.fun
+DOMAIN-SUFFIX,bitkeep.asia
+DOMAIN-SUFFIX,bitkeep.biz
+DOMAIN-SUFFIX,bitapi.vip
+DOMAIN-SUFFIX,bitkeep.app
+DOMAIN-SUFFIX,bitkeep.vip
+DOMAIN-SUFFIX,bitkeep.com

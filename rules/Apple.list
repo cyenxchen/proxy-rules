@@ -1,0 +1,10 @@
+# NAME: Custom Apple
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Migrated from the personal Surge profile on 2026-09-03
+#
+# These rules supplement the upstream Apple, AppleDev, and AppleID lists.
+DOMAIN,gsas.apple.com
+DOMAIN,auth.itunes.apple.com
+DOMAIN,init.itunes.apple.com
+DOMAIN-SUFFIX,apps.apple.com

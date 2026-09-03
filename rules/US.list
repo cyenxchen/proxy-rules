@@ -1,0 +1,12 @@
+# NAME: Custom United States
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Migrated from the personal Surge profile on 2026-09-03
+DOMAIN-SUFFIX,stripecdn.com
+DOMAIN-SUFFIX,gamsgo.com
+DOMAIN-SUFFIX,gamsgocdn.com
+DOMAIN-SUFFIX,gamsgo2.com
+DOMAIN-SUFFIX,ultramobile.com
+DOMAIN-SUFFIX,terabox.com
+DOMAIN-SUFFIX,terabox.app
+DOMAIN-SUFFIX,1024terabox.com
