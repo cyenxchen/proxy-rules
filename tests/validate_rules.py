@@ -28,13 +28,14 @@ ALLOWED_OPTIONS = {"extended-matching", "no-resolve"}
 # Each file is grouped by the single policy supplied by rule.dconf. Keep the
 # migration-size floors so an accidental truncation cannot be published.
 PUBLISHED_RULE_SETS = {
-    "Apple.list": ("🍎 Apple", 4),
-    "Direct.list": ("DIRECT", 12),
+    "Apple.list": ("🍎 Apple", 5),
+    "Direct.list": ("DIRECT", 1),
     "IndependentIP.list": ("🏠 Independent-IP", 18),
     "JP.list": ("🇯🇵 JP", 3),
     "PlayStation.list": ("🎮 PlayStation", 6),
-    "Proxy.list": ("👻 Proxy", 376),
-    "SGP.list": ("🇸🇬 SGP", 13),
+    "Proxy.list": ("👻 Proxy", 377),
+    "SGP.list": ("🇸🇬 SGP", 15),
+    "SteamDirect.list": ("DIRECT", 11),
     "UK.list": ("🇬🇧 UK", 2),
     "US.list": ("🇺🇸 US", 8),
 }
@@ -44,6 +45,29 @@ MINIMUM_RULE_COUNTS = {
 RAW_BASE_URL = (
     "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"
 )
+MIHOMO_RULE_PROVIDERS = {
+    "Apple.list": ("customApple", "🍎 AppleStore"),
+    "Direct.list": ("customDirect", "DIRECT"),
+    "IndependentIP.list": ("customIndependentIP", "🏠 Independent-IP"),
+    "JP.list": ("customJP", "🇯🇵 JP"),
+    "PlayStation.list": ("customPlayStation", "🎮 PlayStation"),
+    "Proxy.list": ("customProxy", "👻 Proxy"),
+    "SGP.list": ("customSGP", "🇸🇬 SGP"),
+    "SteamDirect.list": ("customSteamDirect", "🎯 Direct"),
+    "UK.list": ("customUK", "🇬🇧 UK"),
+    "US.list": ("customUS", "🇺🇸 US"),
+}
+MIHOMO_GROUPS_WITH_UK = {
+    "👻 Proxy",
+    "Ⓜ️ Microsoft",
+    "🍎 Apple",
+    "🍎 AppleStore",
+    "🌐 Google",
+    "📺 Netflix",
+    "📺 BiliBili",
+    "🎮 PlayStation",
+    "🎮 Steam",
+}
 APPLE_UMBRELLA = "/rule/Surge/Apple/Apple.list"
 APPLE_INCLUDED_SUBRULES = {
     "/rule/Surge/AppleFirmware/AppleFirmware.list",
@@ -241,6 +265,160 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
     return errors
 
 
+def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
+    """Validate Mihomo text providers without printing sensitive YAML fields."""
+    if not path.is_file():
+        return [f"{path}: Mihomo config not found"]
+
+    try:
+        import yaml
+    except ImportError:
+        return [f"{path}: PyYAML is required for --mihomo-config validation"]
+
+    try:
+        data = yaml.safe_load(path.read_text())
+    except yaml.YAMLError as exc:
+        return [f"{path}: invalid YAML: {exc}"]
+    if not isinstance(data, dict):
+        return [f"{path}: top-level YAML value must be a mapping"]
+
+    errors: list[str] = []
+    providers = data.get("rule-providers") or {}
+    if not isinstance(providers, dict):
+        return [f"{path}: rule-providers must be a mapping"]
+
+    for filename, (provider_name, _) in MIHOMO_RULE_PROVIDERS.items():
+        provider = providers.get(provider_name)
+        if not isinstance(provider, dict):
+            errors.append(f"{path}: missing Mihomo provider {provider_name}")
+            continue
+
+        expected = {
+            "type": "http",
+            "behavior": "classical",
+            "format": "text",
+            "path": f"./rule_provider/custom-{filename}",
+            "url": f"{RAW_BASE_URL}/{filename}",
+            "interval": 86400,
+        }
+        for key, expected_value in expected.items():
+            if provider.get(key) != expected_value:
+                errors.append(
+                    f"{path}: provider {provider_name} has invalid {key}; "
+                    f"expected {expected_value!r}"
+                )
+
+    groups = {
+        group.get("name"): group
+        for group in (data.get("proxy-groups") or [])
+        if isinstance(group, dict) and group.get("name")
+    }
+    uk_group = groups.get("🇬🇧 UK")
+    if not isinstance(uk_group, dict):
+        errors.append(f"{path}: missing proxy group '🇬🇧 UK'")
+    else:
+        if uk_group.get("type") != "url-test":
+            errors.append(f"{path}: '🇬🇧 UK' must use type 'url-test'")
+        if uk_group.get("include-all-providers") is not True:
+            errors.append(f"{path}: '🇬🇧 UK' must include all providers")
+        if "🇬🇧" not in str(uk_group.get("filter", "")):
+            errors.append(f"{path}: '🇬🇧 UK' filter must select UK nodes")
+
+    for group_name in sorted(MIHOMO_GROUPS_WITH_UK):
+        group = groups.get(group_name)
+        if not isinstance(group, dict) or "🇬🇧 UK" not in (group.get("proxies") or []):
+            errors.append(f"{path}: group {group_name!r} must reference '🇬🇧 UK'")
+    other_filter = str((groups.get("🌍 Other") or {}).get("filter", ""))
+    if "🇬🇧" not in other_filter:
+        errors.append(f"{path}: '🌍 Other' must exclude UK nodes")
+
+    rules = data.get("rules") or []
+    if not isinstance(rules, list):
+        return errors + [f"{path}: rules must be a list"]
+
+    parsed_rules: list[tuple[int, list[str]]] = []
+    for index, raw_rule in enumerate(rules):
+        if not isinstance(raw_rule, str):
+            continue
+        try:
+            fields = [field.strip() for field in next(csv.reader([raw_rule]))]
+        except csv.Error as exc:
+            errors.append(f"{path}: rules[{index}] has invalid CSV syntax: {exc}")
+            continue
+        parsed_rules.append((index, fields))
+
+    custom_provider_names = {
+        provider_name for provider_name, _ in MIHOMO_RULE_PROVIDERS.values()
+    }
+    custom_ref_indexes: list[int] = []
+    for _, (provider_name, policy) in MIHOMO_RULE_PROVIDERS.items():
+        refs = [
+            (index, fields)
+            for index, fields in parsed_rules
+            if len(fields) >= 2
+            and fields[0] == "RULE-SET"
+            and fields[1] == provider_name
+        ]
+        if len(refs) != 1:
+            errors.append(
+                f"{path}: expected one RULE-SET reference for {provider_name}, "
+                f"found {len(refs)}"
+            )
+            continue
+        index, fields = refs[0]
+        custom_ref_indexes.append(index)
+        if len(fields) < 3 or fields[2] != policy:
+            errors.append(
+                f"{path}: RULE-SET {provider_name} must use policy {policy!r}"
+            )
+
+    upstream_ref_indexes = [
+        index
+        for index, fields in parsed_rules
+        if len(fields) >= 2
+        and fields[0] == "RULE-SET"
+        and fields[1] not in custom_provider_names
+    ]
+    if (
+        custom_ref_indexes
+        and upstream_ref_indexes
+        and max(custom_ref_indexes) > min(upstream_ref_indexes)
+    ):
+        errors.append(f"{path}: all custom providers must precede upstream providers")
+
+    # Compare TYPE and VALUE so a stale inline IP rule is caught even if its
+    # no-resolve option differs from the canonical published rule.
+    published_bases: set[tuple[str, str]] = set()
+    for filename in MIHOMO_RULE_PROVIDERS:
+        rule_path = rules_dir / filename
+        if not rule_path.is_file():
+            continue
+        for line_number, raw_line in enumerate(rule_path.read_text().splitlines(), start=1):
+            fields, error = parse_rule(raw_line, f"{rule_path}:{line_number}")
+            if error or fields is None:
+                continue
+            published_bases.add((fields[0], fields[1]))
+
+    remaining_inline = [
+        index
+        for index, fields in parsed_rules
+        if len(fields) >= 3
+        and fields[0] not in {"RULE-SET", "MATCH"}
+        and (fields[0], fields[1]) in published_bases
+    ]
+    if remaining_inline:
+        errors.append(
+            f"{path}: {len(remaining_inline)} published rules remain inline; "
+            f"first is rules[{remaining_inline[0]}]"
+        )
+
+    log(
+        f"mihomo_config={path} custom_providers={len(custom_ref_indexes)} "
+        f"rule_providers={len(providers)}"
+    )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -254,11 +432,18 @@ def main() -> int:
         type=Path,
         help="optional local rule.dconf to validate after migration",
     )
+    parser.add_argument(
+        "--mihomo-config",
+        type=Path,
+        help="optional local Mihomo config.yaml to validate after migration",
+    )
     args = parser.parse_args()
 
     errors = validate_rules_directory(args.rules_dir)
     if args.surge_config:
         errors.extend(validate_surge_config(args.surge_config, args.rules_dir))
+    if args.mihomo_config:
+        errors.extend(validate_mihomo_config(args.mihomo_config, args.rules_dir))
 
     if errors:
         for error in errors:

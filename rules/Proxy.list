@@ -78,6 +78,7 @@ DOMAIN-SUFFIX,developers.workers.dev
 DOMAIN-SUFFIX,mozilla.net
 IP-CIDR,194.221.250.50/32,no-resolve
 DOMAIN-SUFFIX,yarnpkg.com
+DOMAIN-SUFFIX,speedtest.net
 DOMAIN-SUFFIX,v2ex.pro
 DOMAIN-SUFFIX,packetsender.com
 DOMAIN-SUFFIX,alchemypay.org

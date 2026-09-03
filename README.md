@@ -1,9 +1,10 @@
 # Proxy Rules
 
-Personal, public [Surge](https://nssurge.com/) rule sets that supplement
-third-party upstream lists. This repository intentionally publishes only
+Personal, public rule sets shared by [Surge](https://nssurge.com/) and
+[Mihomo](https://wiki.metacubex.one/). They supplement third-party upstream
+lists without copying those lists. This repository intentionally publishes only
 non-sensitive custom rules; private company, LAN, Tailscale, Ponte, and device
-rules remain in the local Surge profile.
+rules remain in local profiles.
 
 ## Published rule sets
 
@@ -16,14 +17,31 @@ rules remain in the local Surge profile.
 | `PlayStation.list` | `🎮 PlayStation` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/PlayStation.list` |
 | `Proxy.list` | `👻 Proxy` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list` |
 | `SGP.list` | `🇸🇬 SGP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SGP.list` |
+| `SteamDirect.list` | `DIRECT` / `🎯 Direct` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SteamDirect.list` |
 | `UK.list` | `🇬🇧 UK` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/UK.list` |
 | `US.list` | `🇺🇸 US` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/US.list` |
 
-Example:
+Surge example:
 
 ```ini
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP","update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy","update-interval=86400"
+```
+
+Mihomo uses the same raw files as classical text providers:
+
+```yaml
+rule-providers:
+  customProxy:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list
+    path: ./rule_provider/custom-Proxy.list
+    interval: 86400
+
+rules:
+  - RULE-SET,customProxy,👻 Proxy
 ```
 
 Each file contains rules for one profile-supplied policy because a Surge
@@ -31,9 +49,9 @@ Each file contains rules for one profile-supplied policy because a Surge
 before broader upstream rule sets. Surge evaluates rules from top to bottom and
 uses the first matching policy.
 
-The repository stores only custom overlays; it does not mirror entire upstream
-lists. Private company, LAN, Tailscale, Ponte, and device-specific rules remain
-inline in the local profile.
+Policy names are supplied by each client and may differ. For example,
+`Apple.list` uses `🍎 Apple` in Surge and `🍎 AppleStore` in Mihomo, while
+`SteamDirect.list` uses `DIRECT` in Surge and `🎯 Direct` in Mihomo.
 
 `extended-matching` is deliberately omitted from the example because the
 initial rules were migrated from ordinary inline rules. Adding it would broaden
@@ -47,8 +65,10 @@ matching to TLS SNI and HTTP Host and could change behavior.
 - Keep credentials, subscription URLs, private hostnames, and private network
   ranges out of this public repository.
 - Run `python3 tests/validate_rules.py` before committing.
+- Local Mihomo integration validation additionally requires PyYAML and uses
+  `--mihomo-config /path/to/config.yaml`.
 
 The validator logs each file's rule count, rejects unsupported syntax, unknown
 files, and exact duplicates, and enforces conservative minimum counts to catch
-truncation. With `--surge-config`, it also verifies every published set's policy,
-ordering, and completed inline-rule migration.
+truncation. With `--surge-config` or `--mihomo-config`, it also verifies every
+published set's provider, policy, ordering, and completed inline-rule migration.
