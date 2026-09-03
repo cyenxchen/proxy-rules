@@ -29,7 +29,7 @@ ALLOWED_OPTIONS = {"extended-matching", "no-resolve"}
 # migration-size floors so an accidental truncation cannot be published.
 PUBLISHED_RULE_SETS = {
     "Apple.list": ("🍎 Apple", 5),
-    "Direct.list": ("DIRECT", 12),
+    "Direct.list": ("DIRECT", 19),
     "IndependentIP.list": ("🏠 Independent-IP", 18),
     "JP.list": ("🇯🇵 JP", 3),
     "PlayStation.list": ("🎮 PlayStation", 6),
@@ -64,7 +64,44 @@ MIHOMO_GROUPS_WITH_UK = {
     "📺 Netflix",
     "📺 BiliBili",
     "🎮 PlayStation",
-    "🎮 Steam",
+}
+# Steam download traffic and the control plane that selects its CDN must use
+# DIRECT. Exact third-party hosts stay narrow so unrelated services under the
+# same provider domains continue through the upstream Steam proxy rules.
+STEAM_DIRECT_RULES = {
+    ("DOMAIN-SUFFIX", "steamserver.net"),
+    ("DOMAIN", "api.steampowered.com"),
+    ("DOMAIN", "cs.steampowered.com"),
+    ("DOMAIN-SUFFIX", "steamcontent.com"),
+    ("DOMAIN", "cdn-ali.content.steamchina.com"),
+    ("DOMAIN", "cdn-qc.content.steamchina.com"),
+    ("DOMAIN", "cdn-ws.content.steamchina.com"),
+    ("DOMAIN", "dl.steam.clngaa.com"),
+    ("DOMAIN", "edge.steam-dns.top.comcast.net"),
+    ("DOMAIN", "lv.queniujq.cn"),
+    ("DOMAIN", "st.dl.bscstorage.net"),
+    ("DOMAIN", "st.dl.eccdnx.com"),
+    ("DOMAIN", "steam.cdn.on.net"),
+    ("DOMAIN", "steampipe-kr.akamaized.net"),
+    ("DOMAIN", "steampipe-partner.akamaized.net"),
+    ("DOMAIN", "steampipe-sc.akamaized.net"),
+    ("DOMAIN", "steampipe-tr.akamaized.net"),
+    ("DOMAIN", "steampipe.akamaized.net"),
+    ("DOMAIN", "xz.pphimalayanrt.com"),
+}
+STALE_DIRECT_RULES = {
+    ("DOMAIN-SUFFIX", "dl.steam.ksyna.com"),
+    ("DOMAIN-SUFFIX", "st.dl.pinyuncloud.com"),
+    ("DOMAIN-SUFFIX", "steampipe.steamcontent.tnkjmec.com"),
+    ("DOMAIN-SUFFIX", "steampowered.com.8686c.com"),
+    ("DOMAIN-SUFFIX", "steamstatic.com.8686c.com"),
+    ("DOMAIN-SUFFIX", "taobao.taobao"),
+}
+NON_DOWNLOAD_STEAM_RULES = {
+    ("DOMAIN", "steambroadcast-test.akamaized.net"),
+    ("DOMAIN", "steambroadcast.akamaized.net"),
+    ("DOMAIN", "steambroadcastchat.akamaized.net"),
+    ("DOMAIN", "broadcast.st.dl.eccdnx.com"),
 }
 APPLE_UMBRELLA = "/rule/Surge/Apple/Apple.list"
 APPLE_INCLUDED_SUBRULES = {
@@ -146,6 +183,17 @@ def validate_rule_file(path: Path) -> list[str]:
     minimum = MINIMUM_RULE_COUNTS.get(path.name, 1)
     if count < minimum:
         errors.append(f"{path}: expected at least {minimum} rules, found {count}")
+    if path.name == "Direct.list":
+        rule_bases = {(fields[0], fields[1]) for fields in seen}
+        for missing in sorted(STEAM_DIRECT_RULES - rule_bases):
+            errors.append(f"{path}: missing Steam DIRECT rule {','.join(missing)}")
+        for stale in sorted(STALE_DIRECT_RULES & rule_bases):
+            errors.append(f"{path}: stale DIRECT rule remains {','.join(stale)}")
+        for non_download in sorted(NON_DOWNLOAD_STEAM_RULES & rule_bases):
+            errors.append(
+                f"{path}: non-download Steam rule must remain proxied "
+                f"{','.join(non_download)}"
+            )
     log(f"file={path.name} rules={count} minimum={minimum}")
     return errors
 
@@ -256,6 +304,30 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
         if any(subrule in line for line in lines):
             errors.append(f"{path}: redundant Apple subrule remains: {subrule}")
 
+    # Direct download exceptions are evaluated first; every broader upstream
+    # Steam match must then use the general proxy policy without a wrapper.
+    steam_upstream_refs = [
+        (line_number, raw_line)
+        for line_number, raw_line in enumerate(lines, start=1)
+        if "/rule/Surge/Steam/" in raw_line
+        or "/rule/Surge/SteamCN/" in raw_line
+    ]
+    if len(steam_upstream_refs) != 2:
+        errors.append(
+            f"{path}: expected two upstream Steam rule sets, "
+            f"found {len(steam_upstream_refs)}"
+        )
+    for line_number, raw_line in steam_upstream_refs:
+        fields = [field.strip() for field in next(csv.reader([raw_line]))]
+        if len(fields) < 3 or fields[2] != "👻 Proxy":
+            errors.append(
+                f"{path}:{line_number}: non-download Steam rules must use '👻 Proxy'"
+            )
+
+    policy_config = path.with_name("proxy_group.dconf")
+    if policy_config.is_file() and "🎮 Steam" in policy_config.read_text():
+        errors.append(f"{policy_config}: redundant Steam wrapper group remains")
+
     log(
         f"config={path} custom_refs={len(custom_ref_indexes)} "
         f"apple_umbrella_refs={umbrella_count}"
@@ -328,9 +400,13 @@ def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
             errors.append(f"{path}: group {group_name!r} must reference '🇬🇧 UK'")
     if "🎯 Direct" in groups:
         errors.append(f"{path}: redundant '🎯 Direct' wrapper group remains")
+    if "🎮 Steam" in groups:
+        errors.append(f"{path}: redundant '🎮 Steam' wrapper group remains")
     for group_name, group in groups.items():
         if "🎯 Direct" in (group.get("proxies") or []):
             errors.append(f"{path}: group {group_name!r} still references '🎯 Direct'")
+        if "🎮 Steam" in (group.get("proxies") or []):
+            errors.append(f"{path}: group {group_name!r} still references '🎮 Steam'")
     other_filter = str((groups.get("🌍 Other") or {}).get("filter", ""))
     if "🇬🇧" not in other_filter:
         errors.append(f"{path}: '🌍 Other' must exclude UK nodes")
@@ -360,6 +436,24 @@ def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
             f"{path}: {len(direct_wrapper_rules)} rules still use '🎯 Direct'; "
             f"first is rules[{direct_wrapper_rules[0]}]"
         )
+
+    steam_upstream_refs = [
+        (index, fields)
+        for index, fields in parsed_rules
+        if len(fields) >= 2
+        and fields[0] == "RULE-SET"
+        and fields[1] in {"steam", "steam_cn"}
+    ]
+    if len(steam_upstream_refs) != 2:
+        errors.append(
+            f"{path}: expected two upstream Steam provider references, "
+            f"found {len(steam_upstream_refs)}"
+        )
+    for index, fields in steam_upstream_refs:
+        if len(fields) < 3 or fields[2] != "👻 Proxy":
+            errors.append(
+                f"{path}: rules[{index}] non-download Steam rules must use '👻 Proxy'"
+            )
 
     custom_provider_names = {
         provider_name for provider_name, _ in MIHOMO_RULE_PROVIDERS.values()

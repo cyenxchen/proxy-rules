@@ -56,6 +56,20 @@ rules use the built-in `DIRECT` policy on both clients.
 initial rules were migrated from ordinary inline rules. Adding it would broaden
 matching to TLS SNI and HTTP Host and could change behavior.
 
+### Steam routing boundary
+
+`Direct.list` sends Steam game downloads and the CM/CDN selection path through
+the built-in `DIRECT` policy. The broader upstream Steam and SteamCN lists must
+follow it and use the general proxy policy, so store, community, friends,
+authentication, broadcasts, and game traffic are not made direct by default.
+
+The maintained download list follows Valve's public
+[`GetSteamPipeDomains`](https://api.steampowered.com/ISteamDirectory/GetSteamPipeDomains/v1/)
+and content-server directory responses. `steamserver.net` is also direct because
+the CM session location can affect the selected download cell. Third-party CDN
+hosts use exact `DOMAIN` rules; `steamcontent.com` remains a suffix because
+Valve publishes its cache fleet as `*.steamcontent.com`.
+
 ## Editing
 
 - Put one Surge rule in each line.

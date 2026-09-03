@@ -3,17 +3,34 @@
 # FORMAT: Surge RULE-SET (policy is supplied by the caller)
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
-# Steam download endpoints come from the original Surge profile and override
-# the broader upstream Steam rules that follow this custom list.
+# Steam game downloads and CDN selection must bypass the proxy. These rules
+# override the broader upstream Steam rules, which keep other Steam traffic on
+# the general proxy policy.
+#
+# Current data-plane hosts are derived from Valve's GetSteamPipeDomains API.
+# steamserver.net and api.steampowered.com keep the CM/CDN selection path on the
+# real client network; CM hostnames cannot be split further by service role.
 DOMAIN-SUFFIX,steamserver.net
-DOMAIN-SUFFIX,dl.steam.clngaa.com
-DOMAIN-SUFFIX,dl.steam.ksyna.com
-DOMAIN-SUFFIX,st.dl.eccdnx.com
-DOMAIN-SUFFIX,st.dl.bscstorage.net
-DOMAIN-SUFFIX,st.dl.pinyuncloud.com
-DOMAIN-SUFFIX,steampipe.steamcontent.tnkjmec.com
-DOMAIN-SUFFIX,steampowered.com.8686c.com
-DOMAIN-SUFFIX,steamstatic.com.8686c.com
-DOMAIN-SUFFIX,cdn-qc.content.steamchina.com
-DOMAIN-SUFFIX,cdn-ali.content.steamchina.com
-DOMAIN-SUFFIX,taobao.taobao
+DOMAIN,api.steampowered.com
+DOMAIN,cs.steampowered.com
+
+# Valve and partner game-content endpoints. Use exact matches for third-party
+# CDN domains so unrelated provider traffic continues through the proxy.
+DOMAIN-SUFFIX,steamcontent.com
+DOMAIN,cdn-ali.content.steamchina.com
+DOMAIN,cdn-qc.content.steamchina.com
+DOMAIN,cdn-ws.content.steamchina.com
+DOMAIN,dl.steam.clngaa.com
+DOMAIN,edge.steam-dns.top.comcast.net
+DOMAIN,lv.queniujq.cn
+# Valve no longer advertises this host, but it still served a verified Steam
+# depot chunk on 2026-09-03, so keep it as a legacy download fallback.
+DOMAIN,st.dl.bscstorage.net
+DOMAIN,st.dl.eccdnx.com
+DOMAIN,steam.cdn.on.net
+DOMAIN,steampipe-kr.akamaized.net
+DOMAIN,steampipe-partner.akamaized.net
+DOMAIN,steampipe-sc.akamaized.net
+DOMAIN,steampipe-tr.akamaized.net
+DOMAIN,steampipe.akamaized.net
+DOMAIN,xz.pphimalayanrt.com
