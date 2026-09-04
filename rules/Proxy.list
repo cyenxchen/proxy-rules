@@ -4,6 +4,7 @@
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
+DOMAIN-SUFFIX,1passwordservices.com
 DOMAIN-SUFFIX,gravatar.com
 DOMAIN-SUFFIX,apkpure.com
 DOMAIN-SUFFIX,hezu.wiki
