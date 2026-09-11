@@ -4,6 +4,12 @@
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
+DOMAIN-SUFFIX,123av.com
+DOMAIN-SUFFIX,njav.tv
+DOMAIN-SUFFIX,mp4ko.de
+DOMAIN-SUFFIX,javhd.com
+DOMAIN-SUFFIX,javfilms.com
+DOMAIN-SUFFIX,javher.com
 DOMAIN-SUFFIX,cloudflare-dns.com
 DOMAIN-SUFFIX,1passwordservices.com
 DOMAIN-SUFFIX,gravatar.com
