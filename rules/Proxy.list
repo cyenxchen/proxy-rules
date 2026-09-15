@@ -4,6 +4,7 @@
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
+DOMAIN-SUFFIX,getdropbox.com
 DOMAIN-SUFFIX,123av.com
 DOMAIN-SUFFIX,njav.tv
 DOMAIN-SUFFIX,mp4ko.de
