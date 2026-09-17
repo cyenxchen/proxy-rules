@@ -2,6 +2,7 @@
 # MAINTAINER: cyenx
 # FORMAT: Surge RULE-SET (policy is supplied by the caller)
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
+DOMAIN-SUFFIX,kotokotori.com
 DOMAIN-SUFFIX,myfans.jp
 DOMAIN-SUFFIX,dmm.co.jp
 DOMAIN-SUFFIX,sourcenext.com
