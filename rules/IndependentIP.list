@@ -23,5 +23,13 @@ DOMAIN-SUFFIX,ip2location.com
 DOMAIN-SUFFIX,ping0.cc
 DOMAIN-SUFFIX,claude.site
 DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,clau.de
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,claude.dev
+DOMAIN-SUFFIX,claudemcpclient.com
+DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN,servd-anthropic-website.b-cdn.net
+DOMAIN,cdn.usefathom.com
 DOMAIN-SUFFIX,muse.ai
 DOMAIN-SUFFIX,meta.ai
