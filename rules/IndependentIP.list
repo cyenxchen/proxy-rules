@@ -15,7 +15,6 @@ PROCESS-NAME,"Claude Helper"
 PROCESS-NAME,claude
 PROCESS-NAME,codex
 DOMAIN-SUFFIX,ipdata.co
-DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
 DOMAIN-SUFFIX,datadoghq.com
 DOMAIN-SUFFIX,claudeusercontent.com
