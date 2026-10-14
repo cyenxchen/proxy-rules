@@ -1,0 +1,28 @@
+# NAME: Custom Claude
+# MAINTAINER: cyenx
+# FORMAT: Surge RULE-SET (policy is supplied by the caller)
+# SOURCE: Split from IndependentIP.list on 2026-10-14
+#
+# Keep one rule per line. Do not add a policy name or FINAL here.
+DOMAIN-SUFFIX,Claude.md
+PROCESS-NAME,"Claude Helper"
+PROCESS-NAME,claude
+DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
+DOMAIN-SUFFIX,datadoghq.com
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN-SUFFIX,claude.site
+DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,claude.app
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,clau.de
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,claude.dev
+DOMAIN-SUFFIX,claudemcpclient.com
+DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN,servd-anthropic-website.b-cdn.net
+DOMAIN,cdn.usefathom.com
+
+# Official API/Console inbound ranges:
+# https://platform.claude.com/docs/en/api/ip-addresses
+IP-CIDR,160.79.104.0/23,no-resolve
+IP-CIDR6,2607:6bc0::/48,no-resolve

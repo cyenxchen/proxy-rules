@@ -30,7 +30,8 @@ ALLOWED_OPTIONS = {"extended-matching", "no-resolve"}
 PUBLISHED_RULE_SETS = {
     "Apple.list": ("🍎 Apple", 5),
     "Direct.list": ("DIRECT", 19),
-    "IndependentIP.list": ("🏠 Independent-IP", 18),
+    "Claude.list": ("🔒 ClaudeAI", 19),
+    "IndependentIP.list": ("🏠 Independent-IP", 13),
     "JP.list": ("🇯🇵 JP", 3),
     "PlayStation.list": ("🎮 PlayStation", 6),
     "Proxy.list": ("👻 Proxy", 377),

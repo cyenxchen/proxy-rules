@@ -11,6 +11,7 @@ rules remain in local profiles.
 | Rule set | Policy supplied by the profile | Raw URL |
 | --- | --- | --- |
 | `Apple.list` | `🍎 Apple` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Apple.list` |
+| `Claude.list` | `🔒 ClaudeAI` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list` |
 | `Direct.list` | `DIRECT` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Direct.list` |
 | `IndependentIP.list` | `🏠 Independent-IP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list` |
 | `JP.list` | `🇯🇵 JP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/JP.list` |
@@ -23,6 +24,7 @@ rules remain in local profiles.
 Surge example:
 
 ```ini
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"🔒 ClaudeAI","update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP","update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy","update-interval=86400"
 ```

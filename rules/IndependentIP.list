@@ -5,31 +5,15 @@
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
 DOMAIN-SUFFIX,x.ai
-DOMAIN-SUFFIX,Claude.md
 DOMAIN,paymentrelayservice-wpc-device.apple.com
 DOMAIN,paymentrelayservice.apple.com
 DOMAIN,pay.apple.com
 DOMAIN-SUFFIX,cleanip.io
 DOMAIN-SUFFIX,iprisk.top
-PROCESS-NAME,"Claude Helper"
-PROCESS-NAME,claude
 PROCESS-NAME,codex
 DOMAIN-SUFFIX,ipdata.co
-DOMAIN-SUFFIX,browser-intake-us5-datadoghq.com
-DOMAIN-SUFFIX,datadoghq.com
-DOMAIN-SUFFIX,claudeusercontent.com
 DOMAIN-SUFFIX,ippure.com
 DOMAIN-SUFFIX,ip2location.com
 DOMAIN-SUFFIX,ping0.cc
-DOMAIN-SUFFIX,claude.site
-DOMAIN-SUFFIX,claude.com
-DOMAIN-SUFFIX,anthropic.com
-DOMAIN-SUFFIX,clau.de
-DOMAIN-SUFFIX,claude.ai
-DOMAIN-SUFFIX,claude.dev
-DOMAIN-SUFFIX,claudemcpclient.com
-DOMAIN-SUFFIX,claudemcpcontent.com
-DOMAIN,servd-anthropic-website.b-cdn.net
-DOMAIN,cdn.usefathom.com
 DOMAIN-SUFFIX,muse.ai
 DOMAIN-SUFFIX,meta.ai
