@@ -5,6 +5,7 @@
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
 DOMAIN-SUFFIX,adobe.com
+DOMAIN-SUFFIX,superlogical.com
 DOMAIN-SUFFIX,jdx.dev
 DOMAIN-SUFFIX,python.org
 DOMAIN-SUFFIX,pixpinapp.com
