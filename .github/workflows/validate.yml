@@ -16,5 +16,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      - name: Test validator
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
       - name: Validate published rule sets
         run: python3 tests/validate_rules.py

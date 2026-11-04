@@ -24,9 +24,9 @@ rules remain in local profiles.
 Surge example:
 
 ```ini
-RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"🔒 ClaudeAI","update-interval=86400"
-RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP","update-interval=86400"
-RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy","update-interval=86400"
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"🔒 ClaudeAI",extended-matching,"update-interval=86400"
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP",extended-matching,"update-interval=86400"
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy",extended-matching,"update-interval=86400"
 ```
 
 Mihomo uses the same raw files as classical text providers:
@@ -54,9 +54,11 @@ Policy names are supplied by each client and may differ. For example,
 `Apple.list` uses `🍎 Apple` in Surge and `🍎 AppleStore` in Mihomo. Direct
 rules use the built-in `DIRECT` policy on both clients.
 
-`extended-matching` is deliberately omitted from the example because the
-initial rules were migrated from ordinary inline rules. Adding it would broaden
-matching to TLS SNI and HTTP Host and could change behavior.
+Every Surge reference to these rule sets must enable `extended-matching`.
+This lets Surge also match TLS SNI and HTTP Host when available, reducing
+missed domain matches. Keep the option on the profile's `RULE-SET` reference;
+each public list remains policy-free. The integration validator rejects
+references that omit it.
 
 ### Steam routing boundary
 
@@ -80,6 +82,7 @@ Valve publishes its cache fleet as `*.steamcontent.com`.
 - Keep credentials, subscription URLs, private hostnames, and private network
   ranges out of this public repository.
 - Run `python3 tests/validate_rules.py` before committing.
+- Run `python3 -m unittest discover -s tests -p 'test_*.py'` for validator tests.
 - Local Mihomo integration validation additionally requires PyYAML and uses
   `--mihomo-config /path/to/config.yaml`.
 

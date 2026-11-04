@@ -261,9 +261,9 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
             errors.append(
                 f"{path}:{index + 1}: {name} must use policy {policy!r}"
             )
-        if "extended-matching" in fields[3:]:
+        if "extended-matching" not in fields[3:]:
             errors.append(
-                f"{path}:{index + 1}: {name} must preserve ordinary inline matching"
+                f"{path}:{index + 1}: {name} must enable extended-matching"
             )
 
     upstream_refs = [
