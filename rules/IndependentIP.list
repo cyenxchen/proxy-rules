@@ -4,6 +4,11 @@
 # SOURCE: Migrated from the personal Surge profile on 2026-09-03
 #
 # Keep one rule per line. Do not add a policy name or FINAL here.
+#
+DOMAIN-SUFFIX,www.seagm.com
+DOMAIN-SUFFIX,mtcgame.com
+DOMAIN-SUFFIX,paytr.com
+DOMAIN-SUFFIX,oyunfor.com
 DOMAIN-SUFFIX,x.ai
 DOMAIN,paymentrelayservice-wpc-device.apple.com
 DOMAIN,paymentrelayservice.apple.com
