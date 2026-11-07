@@ -17,6 +17,7 @@ rules remain in local profiles.
 | `JP.list` | `🇯🇵 JP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/JP.list` |
 | `PlayStation.list` | `🎮 PlayStation` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/PlayStation.list` |
 | `Proxy.list` | `👻 Proxy` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list` |
+| `Reject.list` | `REJECT` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Reject.list` |
 | `SGP.list` | `🇸🇬 SGP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SGP.list` |
 | `UK.list` | `🇬🇧 UK` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/UK.list` |
 | `US.list` | `🇺🇸 US` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/US.list` |
@@ -24,6 +25,7 @@ rules remain in local profiles.
 Surge example:
 
 ```ini
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Reject.list,REJECT,extended-matching,"update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"🔒 ClaudeAI",extended-matching,"update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP",extended-matching,"update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy",extended-matching,"update-interval=86400"
@@ -49,6 +51,11 @@ Each file contains rules for one profile-supplied policy because a Surge
 `RULE-SET` applies one policy to every sub-rule. Keep these custom rule sets
 before broader upstream rule sets. Surge evaluates rules from top to bottom and
 uses the first matching policy.
+
+Keep `Reject.list` before the other custom rule sets and broader Bilibili or
+China rules so domain blocking takes precedence over proxy and direct routing.
+It includes a `DOMAIN-WILDCARD` entry; preserve that pattern rather than widening
+it to a domain suffix or keyword match.
 
 Policy names are supplied by each client and may differ. For example,
 `Apple.list` uses `🍎 Apple` in Surge and `🍎 AppleStore` in Mihomo. Direct

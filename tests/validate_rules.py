@@ -17,6 +17,7 @@ ALLOWED_TYPES = {
     "DOMAIN",
     "DOMAIN-KEYWORD",
     "DOMAIN-SUFFIX",
+    "DOMAIN-WILDCARD",
     "IP-ASN",
     "IP-CIDR",
     "IP-CIDR6",
@@ -35,6 +36,7 @@ PUBLISHED_RULE_SETS = {
     "JP.list": ("🇯🇵 JP", 3),
     "PlayStation.list": ("🎮 PlayStation", 6),
     "Proxy.list": ("👻 Proxy", 377),
+    "Reject.list": ("REJECT", 5),
     "SGP.list": ("🇸🇬 SGP", 15),
     "UK.list": ("🇬🇧 UK", 2),
     "US.list": ("🇺🇸 US", 8),
@@ -241,6 +243,7 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
     errors: list[str] = []
 
     custom_ref_indexes: list[int] = []
+    reject_ref_index: int | None = None
     for name, (policy, _) in PUBLISHED_RULE_SETS.items():
         url = f"{RAW_BASE_URL}/{name}"
         refs = [(index, line) for index, line in enumerate(lines) if url in line]
@@ -252,6 +255,8 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
 
         index, raw_line = refs[0]
         custom_ref_indexes.append(index)
+        if name == "Reject.list":
+            reject_ref_index = index
         try:
             fields = [field.strip() for field in next(csv.reader([raw_line]))]
         except csv.Error as exc:
@@ -265,6 +270,9 @@ def validate_surge_config(path: Path, rules_dir: Path) -> list[str]:
             errors.append(
                 f"{path}:{index + 1}: {name} must enable extended-matching"
             )
+
+    if reject_ref_index is not None and reject_ref_index != min(custom_ref_indexes):
+        errors.append(f"{path}: Reject.list must precede other custom rule sets")
 
     upstream_refs = [
         index

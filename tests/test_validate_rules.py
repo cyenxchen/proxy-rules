@@ -4,7 +4,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from validate_rules import validate_surge_config
+from validate_rules import parse_rule, validate_surge_config
+
+
+class RuleParsingTests(unittest.TestCase):
+    def test_accepts_policy_free_domain_wildcard(self):
+        fields, error = parse_rule(
+            "DOMAIN-WILDCARD,*pcdn*.biliapi.net", "Reject.list:1"
+        )
+        self.assertIsNone(error)
+        self.assertEqual(fields, ["DOMAIN-WILDCARD", "*pcdn*.biliapi.net"])
 
 
 class SurgeExtendedMatchingTests(unittest.TestCase):
@@ -16,6 +25,7 @@ class SurgeExtendedMatchingTests(unittest.TestCase):
 
     def write_config(self, ordinary_rule_set=None):
         policies = [
+            ("Reject", "REJECT"),
             ("Apple", "🍎 Apple"),
             ("Claude", "🔒 ClaudeAI"),
             ("Direct", "DIRECT"),
@@ -46,6 +56,18 @@ class SurgeExtendedMatchingTests(unittest.TestCase):
         errors = validate_surge_config(self.config, self.rules_dir)
         self.assertTrue(
             any("Proxy.list" in error and "extended-matching" in error for error in errors),
+            errors,
+        )
+
+    def test_rejects_reject_list_after_other_custom_rules(self):
+        self.write_config()
+        lines = self.config.read_text().splitlines()
+        reject = lines.pop(1)
+        lines.insert(3, reject)
+        self.config.write_text("\n".join(lines) + "\n")
+        errors = validate_surge_config(self.config, self.rules_dir)
+        self.assertTrue(
+            any("Reject.list must precede other custom rule sets" in error for error in errors),
             errors,
         )
 

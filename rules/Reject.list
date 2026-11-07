@@ -1,0 +1,6 @@
+# Custom domain blocking rules. The caller supplies the REJECT policy.
+DOMAIN-WILDCARD,*pcdn*.biliapi.net
+DOMAIN-SUFFIX,mcdn.bilivideo.cn
+DOMAIN-SUFFIX,mcdn.bilivideo.com
+DOMAIN-SUFFIX,szbdyd.com
+DOMAIN-SUFFIX,mountaintoys.cn
