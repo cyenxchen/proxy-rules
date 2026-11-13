@@ -1,9 +1,3 @@
-# NAME: Custom Proxy
-# MAINTAINER: cyenx
-# FORMAT: Surge RULE-SET (policy is supplied by the caller)
-# SOURCE: Migrated from the personal Surge profile on 2026-09-03
-#
-# Keep one rule per line. Do not add a policy name or FINAL here.
 DOMAIN-SUFFIX,adobe.com
 DOMAIN-SUFFIX,superlogical.com
 DOMAIN-SUFFIX,jdx.dev
@@ -408,3 +402,12 @@ DOMAIN-SUFFIX,t3.codes
 DOMAIN-SUFFIX,archives.fedoraproject.org
 DOMAIN-SUFFIX,t3coderelay.com
 DOMAIN-SUFFIX,nodesource.com
+
+DOMAIN,api.readfrog.app
+DOMAIN,api.iconify.design
+DOMAIN,api2.iconify.design
+# Cursor cloud computers use changing, nested hostnames.
+DOMAIN-SUFFIX,cursorvm.com
+DOMAIN,login.tailscale.com
+DOMAIN,api.insight.synology.com
+DOMAIN,sessions.bugsnag.com
