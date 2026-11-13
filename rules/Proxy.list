@@ -411,3 +411,4 @@ DOMAIN-SUFFIX,cursorvm.com
 DOMAIN,login.tailscale.com
 DOMAIN,api.insight.synology.com
 DOMAIN,sessions.bugsnag.com
+DOMAIN-SUFFIX,sigstore.dev
