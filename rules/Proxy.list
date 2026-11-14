@@ -402,13 +402,12 @@ DOMAIN-SUFFIX,t3.codes
 DOMAIN-SUFFIX,archives.fedoraproject.org
 DOMAIN-SUFFIX,t3coderelay.com
 DOMAIN-SUFFIX,nodesource.com
-
 DOMAIN,api.readfrog.app
 DOMAIN,api.iconify.design
 DOMAIN,api2.iconify.design
-# Cursor cloud computers use changing, nested hostnames.
 DOMAIN-SUFFIX,cursorvm.com
 DOMAIN,login.tailscale.com
 DOMAIN,api.insight.synology.com
 DOMAIN,sessions.bugsnag.com
 DOMAIN-SUFFIX,sigstore.dev
+DOMAIN-SUFFIX,quiet.md
