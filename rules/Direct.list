@@ -36,3 +36,5 @@ DOMAIN,srv02.codefusion.technology
 DOMAIN,srv01.codefusion.technology
 DOMAIN,download.gfe.nvidia.com
 DOMAIN,gld.push.samsungosp.com
+IP-CIDR,179.255.151.99/32,no-resolve
+IP-CIDR6,2605:52c0:1:73d:be24:11ff:fe49:e8ca/128,no-resolve
