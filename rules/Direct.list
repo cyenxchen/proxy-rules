@@ -21,3 +21,10 @@ DOMAIN,steampipe-sc.akamaized.net
 DOMAIN,steampipe-tr.akamaized.net
 DOMAIN,steampipe.akamaized.net
 DOMAIN,xz.pphimalayanrt.com
+
+# NVIDIA driver downloads and update services; telemetry is not included.
+DOMAIN-SUFFIX,download.nvidia.com
+DOMAIN,ota-downloads.nvidia.com
+DOMAIN,ota.nvidia.com
+DOMAIN,services.gfe.nvidia.com
+DOMAIN,static.nvidiagrid.net
