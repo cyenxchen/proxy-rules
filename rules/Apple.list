@@ -8,3 +8,7 @@ DOMAIN,gsp-ssl.ls.apple.com
 DOMAIN,time.apple.com
 DOMAIN,wps.apple.com
 DOMAIN,comm-main.ess.apple.com
+DOMAIN,amp-api.fitness.apple.com
+DOMAIN,gspe1-ssl.ls.apple.com
+DOMAIN,query.ess.apple.com
+DOMAIN,weather-edge.apple.com
