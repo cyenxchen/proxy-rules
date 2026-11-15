@@ -420,3 +420,5 @@ DOMAIN-SUFFIX,8-lives-cat.io
 DOMAIN,log.tailscale.com
 DOMAIN-SUFFIX,u.expo.dev
 DOMAIN-SUFFIX,cdn.ldstatic.com
+DOMAIN-SUFFIX,cdn3.ldstatic.com
+DOMAIN-SUFFIX,ping.ldstatic.com
