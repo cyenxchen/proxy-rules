@@ -422,3 +422,7 @@ DOMAIN-SUFFIX,u.expo.dev
 DOMAIN-SUFFIX,cdn.ldstatic.com
 DOMAIN-SUFFIX,cdn3.ldstatic.com
 DOMAIN-SUFFIX,ping.ldstatic.com
+DOMAIN-SUFFIX,api.assrt.net
+DOMAIN-SUFFIX,subhd.one
+DOMAIN-SUFFIX,subhd.me
+DOMAIN-SUFFIX,api.opensubtitles.com
