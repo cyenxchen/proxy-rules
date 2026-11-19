@@ -446,6 +446,8 @@ DOMAIN-SUFFIX,vercel-storage.com
 DOMAIN,api.mason-registry.dev
 DOMAIN,www.ueiwsp.com
 DOMAIN,cdn.samsungcloudsolution.com
-DOMAIN,ocfconnect-shard-ap03-apnortheast2.samsungiotcloud.com
+DOMAIN-SUFFIX,samsungiotcloud.com
 DOMAIN,api.themoviedb.org
-DOMAIN,www.omdbapi.com
+DOMAIN-SUFFIX,omdbapi.com
+DOMAIN-SUFFIX,poke.com
+DOMAIN-SUFFIX,jsdelivr.net
