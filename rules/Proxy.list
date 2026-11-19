@@ -436,3 +436,7 @@ DOMAIN-SUFFIX,hub.v2core.com
 DOMAIN-SUFFIX,pqrs.org
 DOMAIN-SUFFIX,workoscdn.com
 DOMAIN,api-huacloud.com
+DOMAIN,apt.releases.hashicorp.com
+DOMAIN,packagecloud.io
+DOMAIN,pkgs.tailscale.com
+DOMAIN,wthziax2yejsqc4k.public.blob.vercel-storage.com
