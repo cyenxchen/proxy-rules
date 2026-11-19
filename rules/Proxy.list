@@ -439,5 +439,4 @@ DOMAIN,api-huacloud.com
 DOMAIN,apt.releases.hashicorp.com
 DOMAIN,packagecloud.io
 DOMAIN,pkgs.tailscale.com
-DOMAIN,wthziax2yejsqc4k.public.blob.vercel-storage.com
-DOMAIN-SUFFIX,private.blob.vercel-storage.com
+DOMAIN-SUFFIX,vercel-storage.com
