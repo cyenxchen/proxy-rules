@@ -440,3 +440,4 @@ DOMAIN,apt.releases.hashicorp.com
 DOMAIN,packagecloud.io
 DOMAIN,pkgs.tailscale.com
 DOMAIN-SUFFIX,vercel-storage.com
+DOMAIN,api.mason-registry.dev
