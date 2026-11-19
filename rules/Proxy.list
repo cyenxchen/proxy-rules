@@ -440,3 +440,4 @@ DOMAIN,apt.releases.hashicorp.com
 DOMAIN,packagecloud.io
 DOMAIN,pkgs.tailscale.com
 DOMAIN,wthziax2yejsqc4k.public.blob.vercel-storage.com
+DOMAIN-SUFFIX,3xtpsvt5bhrezq6q.private.blob.vercel-storage.com
