@@ -436,6 +436,8 @@ DOMAIN-SUFFIX,hub.v2core.com
 DOMAIN-SUFFIX,pqrs.org
 DOMAIN-SUFFIX,workos.com
 DOMAIN-SUFFIX,workoscdn.com
+DOMAIN,ocsp.digicert.com
+DOMAIN,rama991.siamparagon.org
 DOMAIN,api-huacloud.com
 DOMAIN,apt.releases.hashicorp.com
 DOMAIN,packagecloud.io
