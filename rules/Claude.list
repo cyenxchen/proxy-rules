@@ -13,7 +13,15 @@ DOMAIN-SUFFIX,claude.ai
 DOMAIN-SUFFIX,claude.dev
 DOMAIN-SUFFIX,claudemcpclient.com
 DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN-SUFFIX,claudeacademy.com
+DOMAIN-SUFFIX,claude.new
+DOMAIN-SUFFIX,antspace.dev
+DOMAIN-SUFFIX,claudepages.dev
+DOMAIN-SUFFIX,claudestudio.com
 DOMAIN,servd-anthropic-website.b-cdn.net
 DOMAIN,cdn.usefathom.com
+DOMAIN-SUFFIX,hcaptcha.com
+DOMAIN,age.yoti.com
 IP-CIDR,160.79.104.0/23,no-resolve
+IP-CIDR,153.61.224.0/22,no-resolve
 IP-CIDR6,2607:6bc0::/48,no-resolve
