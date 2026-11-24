@@ -76,6 +76,10 @@ API endpoints and their mTLS variants. Vertex AI hostnames can also serve other
 models through the same API. See the [Gemini API reference](https://aistudio.google.com/api-reference)
 and [Vertex AI endpoint documentation](https://docs.cloud.google.com/docs/security/compliance/restrict-endpoint-usage).
 
+The list also covers the Antigravity CLI's AICode and Cloud Code API hosts.
+Shared Google authentication, profile, and download hosts use their existing
+routing rules. See the [Antigravity deployment documentation](https://docs.cloud.google.com/docs/security/compliance/deploy-antigravity-us-public-sector#disable-optional-apis).
+
 Google [dynamically allocates public API IP addresses across services](https://docs.cloud.google.com/vpc/docs/access-apis-external-ip#ip-addresses-for-default-domains).
 The list uses hostnames. Google-wide ranges and DNS snapshots cannot identify
 Gemini traffic at the IP level.

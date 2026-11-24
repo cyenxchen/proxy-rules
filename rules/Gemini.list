@@ -6,3 +6,6 @@ DOMAIN-WILDCARD,*-aiplatform.googleapis.com
 DOMAIN-WILDCARD,*-aiplatform.mtls.googleapis.com
 DOMAIN-WILDCARD,aiplatform.*.rep.googleapis.com
 DOMAIN-WILDCARD,aiplatform.*.rep.mtls.googleapis.com
+DOMAIN,aicode.googleapis.com
+DOMAIN,cloudcode-pa.googleapis.com
+DOMAIN,daily-cloudcode-pa.googleapis.com
