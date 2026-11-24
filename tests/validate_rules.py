@@ -42,7 +42,8 @@ PUBLISHED_RULE_SETS = {
     "US.list": ("🇺🇸 US", 8),
 }
 MINIMUM_RULE_COUNTS = {
-    name: minimum for name, (_, minimum) in PUBLISHED_RULE_SETS.items()
+    **{name: minimum for name, (_, minimum) in PUBLISHED_RULE_SETS.items()},
+    "Gemini.list": 8,
 }
 RAW_BASE_URL = (
     "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"
@@ -209,7 +210,7 @@ def validate_rules_directory(rules_dir: Path) -> list[str]:
 
     errors: list[str] = []
     actual_names = {path.name for path in files}
-    expected_names = set(PUBLISHED_RULE_SETS)
+    expected_names = set(MINIMUM_RULE_COUNTS)
     for missing in sorted(expected_names - actual_names):
         errors.append(f"{rules_dir}: missing published rule set {missing}")
     for unexpected in sorted(actual_names - expected_names):

@@ -12,6 +12,7 @@ rules remain in local profiles.
 | --- | --- | --- |
 | `Apple.list` | `🍎 Apple` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Apple.list` |
 | `Claude.list` | `🔒 ClaudeAI` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list` |
+| `Gemini.list` | Chosen by the profile when enabled | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Gemini.list` |
 | `Direct.list` | `DIRECT` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Direct.list` |
 | `IndependentIP.list` | `🏠 Independent-IP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list` |
 | `JP.list` | `🇯🇵 JP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/JP.list` |
@@ -66,6 +67,18 @@ This lets Surge also match TLS SNI and HTTP Host when available, reducing
 missed domain matches. Keep the option on the profile's `RULE-SET` reference;
 each public list remains policy-free. The integration validator rejects
 references that omit it.
+
+### Gemini model APIs
+
+`Gemini.list` covers the Gemini Developer API (REST, OpenAI-compatible API,
+and Live WebSocket), plus the global, regional, and location-specific Vertex AI
+API endpoints and their mTLS variants. Vertex AI hostnames can also serve other
+models through the same API. See the [Gemini API reference](https://aistudio.google.com/api-reference)
+and [Vertex AI endpoint documentation](https://docs.cloud.google.com/docs/security/compliance/restrict-endpoint-usage).
+
+Google [dynamically allocates public API IP addresses across services](https://docs.cloud.google.com/vpc/docs/access-apis-external-ip#ip-addresses-for-default-domains).
+The list uses hostnames. Google-wide ranges and DNS snapshots cannot identify
+Gemini traffic at the IP level.
 
 ### Steam routing boundary
 

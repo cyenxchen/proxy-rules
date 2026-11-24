@@ -1,0 +1,8 @@
+DOMAIN,generativelanguage.googleapis.com
+DOMAIN,generativelanguage.mtls.googleapis.com
+DOMAIN,aiplatform.googleapis.com
+DOMAIN,aiplatform.mtls.googleapis.com
+DOMAIN-WILDCARD,*-aiplatform.googleapis.com
+DOMAIN-WILDCARD,*-aiplatform.mtls.googleapis.com
+DOMAIN-WILDCARD,aiplatform.*.rep.googleapis.com
+DOMAIN-WILDCARD,aiplatform.*.rep.mtls.googleapis.com
