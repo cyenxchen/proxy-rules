@@ -43,7 +43,7 @@ PUBLISHED_RULE_SETS = {
 }
 MINIMUM_RULE_COUNTS = {
     **{name: minimum for name, (_, minimum) in PUBLISHED_RULE_SETS.items()},
-    "Gemini.list": 11,
+    "Gemini.list": 22,
 }
 RAW_BASE_URL = (
     "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"

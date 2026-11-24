@@ -9,3 +9,14 @@ DOMAIN-WILDCARD,aiplatform.*.rep.mtls.googleapis.com
 DOMAIN,aicode.googleapis.com
 DOMAIN,cloudcode-pa.googleapis.com
 DOMAIN,daily-cloudcode-pa.googleapis.com
+DOMAIN-SUFFIX,gemini.google.com
+DOMAIN,aistudio.google.com
+DOMAIN,ai.google.dev
+DOMAIN,alkalimakersuite-pa.clients6.google.com
+DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
+DOMAIN,makersuite.google.com
+DOMAIN-SUFFIX,bard.google.com
+DOMAIN-SUFFIX,generativeai.google
+DOMAIN-SUFFIX,deepmind.com
+DOMAIN-SUFFIX,deepmind.google
+DOMAIN,colab.research.google.com
