@@ -1,6 +1,9 @@
 DOMAIN-WILDCARD,*pcdn*.biliapi.net
 DOMAIN-SUFFIX,mcdn.bilivideo.cn
 DOMAIN-SUFFIX,mcdn.bilivideo.com
+DOMAIN,httpdns.bilivideo.com
+DOMAIN,p2p.bilivideo.com
+DOMAIN-SUFFIX,solseed.cn
 DOMAIN-SUFFIX,szbdyd.com
 DOMAIN-SUFFIX,mountaintoys.cn
 DOMAIN,edge.adobedc.net
