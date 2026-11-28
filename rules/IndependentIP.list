@@ -13,6 +13,8 @@ DOMAIN-SUFFIX,iprisk.top
 PROCESS-NAME,codex
 DOMAIN-SUFFIX,ipdata.co
 DOMAIN-SUFFIX,ippure.com
+# IPPure web API for IP details and risk scores.
+DOMAIN,api.123169.xyz
 DOMAIN-SUFFIX,ip2location.com
 DOMAIN-SUFFIX,ping0.cc
 DOMAIN-SUFFIX,muse.ai
