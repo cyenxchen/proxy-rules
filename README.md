@@ -10,25 +10,25 @@ rules remain in local profiles.
 
 | Rule set | Policy supplied by the profile | Raw URL |
 | --- | --- | --- |
-| `Apple.list` | `🍎 Apple` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Apple.list` |
-| `Claude.list` | `🔒 ClaudeAI` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list` |
-| `Gemini.list` | Chosen by the profile when enabled | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Gemini.list` |
+| `Apple.list` | `Apple` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Apple.list` |
+| `Claude.list` | `💎 Selected-IP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list` |
+| `Gemini.list` | `Gemini` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Gemini.list` |
 | `Direct.list` | `DIRECT` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Direct.list` |
-| `IndependentIP.list` | `🏠 Independent-IP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list` |
+| `IndependentIP.list` | `💎 Selected-IP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list` |
 | `JP.list` | `🇯🇵 JP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/JP.list` |
-| `PlayStation.list` | `🎮 PlayStation` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/PlayStation.list` |
+| `PlayStation.list` | `PlayStation` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/PlayStation.list` |
 | `Proxy.list` | `👻 Proxy` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list` |
 | `Reject.list` | `REJECT` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Reject.list` |
 | `SGP.list` | `🇸🇬 SGP` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/SGP.list` |
-| `UK.list` | `🇬🇧 UK` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/UK.list` |
+| `UK.list` | `Other` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/UK.list` |
 | `US.list` | `🇺🇸 US` | `https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/US.list` |
 
 Surge example:
 
 ```ini
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Reject.list,REJECT,extended-matching,"update-interval=86400"
-RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"🔒 ClaudeAI",extended-matching,"update-interval=86400"
-RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"🏠 Independent-IP",extended-matching,"update-interval=86400"
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Claude.list,"💎 Selected-IP",extended-matching,"update-interval=86400"
+RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/IndependentIP.list,"💎 Selected-IP",extended-matching,"update-interval=86400"
 RULE-SET,https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules/Proxy.list,"👻 Proxy",extended-matching,"update-interval=86400"
 ```
 

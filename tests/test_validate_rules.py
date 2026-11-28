@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from validate_rules import parse_rule, validate_surge_config
+from validate_rules import parse_rule, validate_mihomo_config, validate_surge_config
 
 
 class RuleParsingTests(unittest.TestCase):
@@ -26,16 +26,17 @@ class SurgeExtendedMatchingTests(unittest.TestCase):
     def write_config(self, ordinary_rule_set=None):
         policies = [
             ("Reject", "REJECT"),
-            ("Apple", "🍎 Apple"),
-            ("Claude", "🔒 ClaudeAI"),
             ("Direct", "DIRECT"),
-            ("IndependentIP", "🏠 Independent-IP"),
-            ("JP", "🇯🇵 JP"),
-            ("PlayStation", "🎮 PlayStation"),
+            ("Gemini", "Gemini"),
             ("Proxy", "👻 Proxy"),
-            ("SGP", "🇸🇬 SGP"),
-            ("UK", "🇬🇧 UK"),
+            ("Claude", "💎 Selected-IP"),
+            ("IndependentIP", "💎 Selected-IP"),
+            ("UK", "Other"),
             ("US", "🇺🇸 US"),
+            ("JP", "🇯🇵 JP"),
+            ("SGP", "🇸🇬 SGP"),
+            ("PlayStation", "PlayStation"),
+            ("Apple", "Apple"),
         ]
         base = "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"
         lines = ["[Rule]"]
@@ -70,6 +71,74 @@ class SurgeExtendedMatchingTests(unittest.TestCase):
             any("Reject.list must precede other custom rule sets" in error for error in errors),
             errors,
         )
+
+
+class MihomoConfigValidationTests(unittest.TestCase):
+    def setUp(self):
+        try:
+            import yaml  # noqa: F401
+        except ImportError:
+            self.skipTest("PyYAML is not installed")
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.config = Path(temporary.name) / "config.yaml"
+        self.rules_dir = Path(__file__).resolve().parents[1] / "rules"
+
+    def test_accepts_current_mihomo_providers_and_groups(self):
+        import yaml
+
+        providers = {}
+        rules = []
+        mapping = [
+            ("Reject.list", "customReject", "REJECT"),
+            ("Direct.list", "customDirect", "DIRECT"),
+            ("Gemini.list", "Gemini", "Gemini"),
+            ("Proxy.list", "customProxy", "👻 Proxy"),
+            ("Claude.list", "customClaude", "💎 Selected-IP"),
+            ("IndependentIP.list", "customIndependentIP", "💎 Selected-IP"),
+            ("UK.list", "customUK", "Other"),
+            ("US.list", "customUS", "🇺🇸 US"),
+            ("JP.list", "customJP", "🇯🇵 JP"),
+            ("SGP.list", "customSGP", "🇸🇬 SGP"),
+            ("PlayStation.list", "customPlayStation", "PlayStation"),
+            ("Apple.list", "customApple", "Apple"),
+        ]
+        base = "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"
+        for filename, provider_name, policy in mapping:
+            providers[provider_name] = {
+                "type": "http",
+                "behavior": "classical",
+                "format": "text",
+                "path": f"./rule_provider/custom-{filename}",
+                "url": f"{base}/{filename}",
+                "interval": 86400,
+            }
+            rules.append(f"RULE-SET,{provider_name},{policy}")
+        for upstream in ("steam", "steam_cn"):
+            providers[upstream] = {"type": "http", "behavior": "classical"}
+            rules.append(f"RULE-SET,{upstream},👻 Proxy")
+        rules.append("MATCH,REJECT")
+        groups = [
+            {"name": name, "type": "select", "proxies": ["DIRECT"]}
+            for name in (
+                "👻 Proxy",
+                "💎 Selected-IP",
+                "Gemini",
+                "Other",
+                "🇺🇸 US",
+                "🇯🇵 JP",
+                "🇸🇬 SGP",
+                "PlayStation",
+                "Apple",
+            )
+        ]
+        self.config.write_text(
+            yaml.safe_dump(
+                {"proxy-groups": groups, "rule-providers": providers, "rules": rules},
+                allow_unicode=True,
+            )
+        )
+        self.assertEqual(validate_mihomo_config(self.config, self.rules_dir), [])
 
 
 if __name__ == "__main__":

@@ -29,45 +29,45 @@ ALLOWED_OPTIONS = {"extended-matching", "no-resolve"}
 # Each file is grouped by the single policy supplied by rule.dconf. Keep the
 # migration-size floors so an accidental truncation cannot be published.
 PUBLISHED_RULE_SETS = {
-    "Apple.list": ("🍎 Apple", 5),
+    "Apple.list": ("Apple", 5),
     "Direct.list": ("DIRECT", 19),
-    "Claude.list": ("🔒 ClaudeAI", 19),
-    "IndependentIP.list": ("🏠 Independent-IP", 13),
+    "Claude.list": ("💎 Selected-IP", 19),
+    "Gemini.list": ("Gemini", 22),
+    "IndependentIP.list": ("💎 Selected-IP", 13),
     "JP.list": ("🇯🇵 JP", 3),
-    "PlayStation.list": ("🎮 PlayStation", 6),
+    "PlayStation.list": ("PlayStation", 6),
     "Proxy.list": ("👻 Proxy", 377),
     "Reject.list": ("REJECT", 5),
     "SGP.list": ("🇸🇬 SGP", 15),
-    "UK.list": ("🇬🇧 UK", 2),
+    "UK.list": ("Other", 2),
     "US.list": ("🇺🇸 US", 8),
 }
 MINIMUM_RULE_COUNTS = {
-    **{name: minimum for name, (_, minimum) in PUBLISHED_RULE_SETS.items()},
-    "Gemini.list": 22,
+    name: minimum for name, (_, minimum) in PUBLISHED_RULE_SETS.items()
 }
 RAW_BASE_URL = (
     "https://raw.githubusercontent.com/cyenxchen/proxy-rules/main/rules"
 )
 MIHOMO_RULE_PROVIDERS = {
-    "Apple.list": ("customApple", "🍎 AppleStore"),
+    "Reject.list": ("customReject", "REJECT"),
     "Direct.list": ("customDirect", "DIRECT"),
-    "IndependentIP.list": ("customIndependentIP", "🏠 Independent-IP"),
-    "JP.list": ("customJP", "🇯🇵 JP"),
-    "PlayStation.list": ("customPlayStation", "🎮 PlayStation"),
+    "Gemini.list": ("Gemini", "Gemini"),
     "Proxy.list": ("customProxy", "👻 Proxy"),
-    "SGP.list": ("customSGP", "🇸🇬 SGP"),
-    "UK.list": ("customUK", "🇬🇧 UK"),
+    "Claude.list": ("customClaude", "💎 Selected-IP"),
+    "IndependentIP.list": ("customIndependentIP", "💎 Selected-IP"),
+    "UK.list": ("customUK", "Other"),
     "US.list": ("customUS", "🇺🇸 US"),
+    "JP.list": ("customJP", "🇯🇵 JP"),
+    "SGP.list": ("customSGP", "🇸🇬 SGP"),
+    "PlayStation.list": ("customPlayStation", "PlayStation"),
+    "Apple.list": ("customApple", "Apple"),
 }
-MIHOMO_GROUPS_WITH_UK = {
-    "👻 Proxy",
-    "Ⓜ️ Microsoft",
-    "🍎 Apple",
-    "🍎 AppleStore",
-    "🌐 Google",
-    "📺 Netflix",
-    "📺 BiliBili",
-    "🎮 PlayStation",
+LEGACY_MIHOMO_GROUPS = {
+    "🎯 Direct",
+    "🎮 Steam",
+    "🏠 Independent-IP",
+    "🔒 ClaudeAI",
+    "🇬🇧 UK",
 }
 # Steam download traffic and the control plane that selects its CDN must use
 # DIRECT. Exact third-party hosts stay narrow so unrelated services under the
@@ -393,33 +393,23 @@ def validate_mihomo_config(path: Path, rules_dir: Path) -> list[str]:
         for group in (data.get("proxy-groups") or [])
         if isinstance(group, dict) and group.get("name")
     }
-    uk_group = groups.get("🇬🇧 UK")
-    if not isinstance(uk_group, dict):
-        errors.append(f"{path}: missing proxy group '🇬🇧 UK'")
-    else:
-        if uk_group.get("type") != "url-test":
-            errors.append(f"{path}: '🇬🇧 UK' must use type 'url-test'")
-        if uk_group.get("include-all-providers") is not True:
-            errors.append(f"{path}: '🇬🇧 UK' must include all providers")
-        if "🇬🇧" not in str(uk_group.get("filter", "")):
-            errors.append(f"{path}: '🇬🇧 UK' filter must select UK nodes")
+    required_groups = {
+        policy
+        for _, policy in MIHOMO_RULE_PROVIDERS.values()
+        if policy not in {"DIRECT", "REJECT"}
+    }
+    for group_name in sorted(required_groups):
+        if not isinstance(groups.get(group_name), dict):
+            errors.append(f"{path}: missing proxy group {group_name!r}")
 
-    for group_name in sorted(MIHOMO_GROUPS_WITH_UK):
-        group = groups.get(group_name)
-        if not isinstance(group, dict) or "🇬🇧 UK" not in (group.get("proxies") or []):
-            errors.append(f"{path}: group {group_name!r} must reference '🇬🇧 UK'")
-    if "🎯 Direct" in groups:
-        errors.append(f"{path}: redundant '🎯 Direct' wrapper group remains")
-    if "🎮 Steam" in groups:
-        errors.append(f"{path}: redundant '🎮 Steam' wrapper group remains")
-    for group_name, group in groups.items():
-        if "🎯 Direct" in (group.get("proxies") or []):
-            errors.append(f"{path}: group {group_name!r} still references '🎯 Direct'")
-        if "🎮 Steam" in (group.get("proxies") or []):
-            errors.append(f"{path}: group {group_name!r} still references '🎮 Steam'")
-    other_filter = str((groups.get("🌍 Other") or {}).get("filter", ""))
-    if "🇬🇧" not in other_filter:
-        errors.append(f"{path}: '🌍 Other' must exclude UK nodes")
+    for legacy_name in sorted(LEGACY_MIHOMO_GROUPS):
+        if legacy_name in groups:
+            errors.append(f"{path}: redundant {legacy_name!r} wrapper group remains")
+        for group_name, group in groups.items():
+            if legacy_name in (group.get("proxies") or []):
+                errors.append(
+                    f"{path}: group {group_name!r} still references {legacy_name!r}"
+                )
 
     rules = data.get("rules") or []
     if not isinstance(rules, list):
